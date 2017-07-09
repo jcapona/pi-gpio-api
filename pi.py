@@ -1,4 +1,10 @@
-import RPi.GPIO as GPIO
+from os import environ
+
+ENV = environ["PI_ENV"]
+if ENV == "DEBUG":
+    import rpi_debug as GPIO
+else:
+    import RPi.GPIO as GPIO
 
 
 class Pi(object):
