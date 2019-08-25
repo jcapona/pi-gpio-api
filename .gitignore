@@ -1,2 +1,12 @@
+.idea
+__pycache__
 *.pyc
 *.sw*
+*.log
+/venv
+.DS_Store
+*.egg-info
+build/
+dist/
+.coverage*
+.eggs/
