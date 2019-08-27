@@ -11,16 +11,16 @@ def read(*folders):
 
 
 def get_requirements(file_name):
-    requires_file = read('requirements', file_name)
+    requires_file = read('pi_gpio_api', file_name)
     return requires_file.splitlines()
 
 
 long_description = read('README.rst')
 
 setup(
-    name='pi-gpio-api',
+    name='pi-gpio_api',
     version='0.1.0',
-    description='API to access Raspberry Pi GPIO',
+    description='web API to control Raspberry Pi GPIO',
     long_description=long_description,
     url='https://github.com/jcapona/pi-gpio-api',
     author='Jorge Capona',
@@ -37,7 +37,7 @@ setup(
     ],
     keywords='raspberry pi api gpio io',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=get_requirements('default.txt'),
+    install_requires=get_requirements('requirements.txt'),
     extras_require={},
     package_data={},
     data_files=[],
