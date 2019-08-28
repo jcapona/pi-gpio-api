@@ -1,5 +1,9 @@
-import RPi.GPIO as GPIO
 from pi_gpio_api.core import pin_layout
+try:
+    import RPi.GPIO as GPIO
+except RuntimeError:
+    print('Warning: Not using a Raspberry Pi board')
+    import pi_gpio_api.core.GPIO_mock as GPIO
 
 
 class Pi(object):
