@@ -1,5 +1,9 @@
-import RPi.GPIO as GPIO
 from pi_gpio_api.core import pin_layout
+try:
+    import RPi.GPIO as GPIO
+except RuntimeError:
+    print('Warning: Not using a Raspberry Pi board')
+    import pi_gpio_api.core.GPIO_mock as GPIO
 
 
 class Pi(object):
@@ -50,7 +54,7 @@ class Pi(object):
             GPIO.setup(channel, self.__get_function_by_string(fnc))
         except Exception:
             raise Exception('Can\'t use channel {} as "{}" on this board'.
-            format(channel, fnc))
+                            format(channel, fnc))
 
     def read(self, channel):
         """
@@ -118,5 +122,5 @@ class Pi(object):
         """
         try:
             return self.channel_functions[GPIO.gpio_function(pin)]
-        except:
+        except Exception:
             return pin_layout.pin_description(pin)
