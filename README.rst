@@ -1,29 +1,54 @@
 Raspberry Pi GPIO Api
 =====================
 
+API to access Raspberry Pi GPIO based on Python, Flask & Rpi.GPIO library
 
-API to access Raspberry Pi GPIO based on Python & Flask
+API
+---
 
-Outputs
--------
++--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Route                    | Request | Description                                                                                                                                                                                                                                       |
++==========================+=========+===================================================================================================================================================================================================================================================+
+| `/api/gpio/`             | GET     | Returns a json object with the status of all pins                                                                                                                                                                                                 |
++--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `/api/gpio/power/`       | GET     | Returns a json object with the power pins position and description (5V, 3V3, GND)                                                                                                                                                                 |
++--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `/api/gpio/io/`          | GET     | Returns a json object with de description and status for a channel. If no channel is given, returns the status of all io pins.                                                                                                                    |
++--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `/api/gpio/io/<CHANNEL>` | POST    | Sets up a particular channel. Receives a json object that must have the keys `type` and `value`. `type`  must be a string with either `input` or `output` and `value` must be a boolean, with the status to write to the channel of the request.  |
++--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-To access and set the status of an output, a POST request must be sent to `/api/gpio/output/<OUTPUT>`, where OUTPUT is the index used to identify the output pin.
-The content of the POST message must be in a valid json format, in the form:
+Sample response
+---------------
 
 .. code-block:: sh
 
-    {"value": 1}
+    {
+        "io": [
+            {
+                "pin": 3,
+                "pin_function": "IO",
+                "pin_state": 1
+            },
+           ...],
+
+        "power_pins": [
+            {
+                "pin": 1,
+                "pin_function": "3V3 Power"
+            },
+           ...]
+    }
 
 
-With a 1 or a 0 as the value. An `Ok` should be received on success, or a message detailing the error on failure.
+Run the API
+-----------
 
-Inputs
-------
+In a python shell:
 
-To set a channel as an input and read the current status, a GET request must be sent to `/api/gpio/input/<INPUT>`, where `INPUT` is the index of the pin to be read.
+.. code-block:: python
 
-Status
-------
+    >>> import pi_gpio_api
+    >>> pi_gpio_api.app.run('0.0.0.0')
 
-To read the status of all the IO modified in the current session, a GET request must be sent to `/api/gpio/info`.
-
+This will block the shell and start listening requests on the given host.
