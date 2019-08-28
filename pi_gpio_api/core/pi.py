@@ -93,7 +93,7 @@ class Pi(object):
         :return: dict of data abour one/a list of channels
         """
         pins = pin_layout.ALL_PINS if not channel else channel
-        if not isinstance(pins, list):
+        if not (isinstance(pins, list) or isinstance(pins, tuple)):
             pins = [pins]
 
         data = []
@@ -114,7 +114,7 @@ class Pi(object):
         :return: string with the description of the pin
         """
         try:
-            descr = self.set_channel_functions[GPIO.gpio_function(pin)]
+            descr = self.set_channel_function[GPIO.gpio_function(pin)]
         except Exception:
             descr = pin_layout.pin_description(pin)
         return descr
