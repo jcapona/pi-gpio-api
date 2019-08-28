@@ -115,6 +115,6 @@ class Pi(object):
         """
         try:
             descr = self.set_channel_functions[GPIO.gpio_function(pin)]
-        except:
+        except Exception:
             descr = pin_layout.pin_description(pin)
         return descr
