@@ -11,7 +11,7 @@ def read(*folders):
 
 
 def get_requirements(file_name):
-    requires_file = read('pi_gpio_api', file_name)
+    requires_file = read('requirements', file_name)
     return requires_file.splitlines()
 
 
@@ -37,7 +37,9 @@ setup(
     ],
     keywords='raspberry pi api gpio io',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=get_requirements('requirements.txt'),
+    install_requires=get_requirements('app_reqs.txt'),
+    test_suite='tests',
+    setup_requires=get_requirements('test_reqs.txt'),
     extras_require={},
     package_data={},
     data_files=[],
