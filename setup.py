@@ -43,5 +43,9 @@ setup(
     extras_require={},
     package_data={},
     data_files=[],
-    entry_points={},
+    entry_points={
+        'console_scripts': [
+            'gpioapi = pi_gpio_api.__main__:main'
+        ]
+    }
 )

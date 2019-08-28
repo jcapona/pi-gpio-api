@@ -50,7 +50,7 @@ class Pi(object):
             GPIO.setup(channel, self.__get_function_by_string(fnc))
         except Exception:
             raise Exception('Can\'t use channel {} as "{}" on this board'.
-            format(channel, fnc))
+                            format(channel, fnc))
 
     def read(self, channel):
         """
@@ -118,5 +118,5 @@ class Pi(object):
         """
         try:
             return self.channel_functions[GPIO.gpio_function(pin)]
-        except:
+        except Exception:
             return pin_layout.pin_description(pin)
