@@ -18,10 +18,11 @@ API
 +--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | `/api/gpio/power/<PIN>`  | GET     | Returns a json object with the power pins position and description (5V, 3V3, GND)                                                                                                                                                                 |
 +--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| `/api/gpio/io/<PIN>`     | GET     | Returns a json object with de description and status for a channel. If no channel is given, returns the status of all io pins.                                                                                                                    |
+| `/api/gpio/io/<PIN>`     | GET     | Returns a json object with de description and status for a pin. If no pin number is given, returns the status of all io pins.                                                                                                                     |
 +--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| `/api/gpio/io/<PIN>`     | POST    | Sets up a particular pin. Receives a json object that must have the keys `type` and `value`. `type`  must be a string with either `input` or `output` and `value` must be a boolean, with the status to write to the channel of the request.  |
+| `/api/gpio/io/<PIN>`     | POST    | Sets up a particular pin. Receives a json object that must have the keys `type` and `value`. `type`  must be a string with either `input` or `output` and `value` must be a boolean, with the status to write to the channel of the request.      |
 +--------------------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 
 Sample response
 ---------------
