@@ -15,14 +15,26 @@ def set_channel_status(channel):
         abort(400., 'Invalid pin')
 
     content = request.json
+    pin_type = content.get('type')
+    value = content.get('value')
 
-    if content.get('type'):
-        pi.set_channel_function(channel, content.get('type'))
-    if content.get('value'):
-        pi.write(channel, content.get('value'))
+    if not isinstance(pin_type, str) or pin_type not in ('input', 'output'):
+        abort(400, 'type must be a string, either "input" or "output"')
 
-    status = {'status': pi.gpio_status(channel)}
-    return jsonify(status)
+    if not value and pin_type.lower() == 'output':
+        abort(400, 'Missing "value" parameter')
+
+    if value and pin_type.lower() == 'input':
+        abort(400, 'Can\'t write a value to a channel setup as input')
+
+    try:
+        pi.set_channel_function(channel, pin_type)
+        if value:
+            pi.write(channel, value)
+    except Exception as e:
+        abort(400, e.message)
+
+    return jsonify(status=pi.gpio_status(channel))
 
 
 @app.route('/api/gpio/io/<int:channel>', methods=['GET'])
@@ -53,7 +65,7 @@ def all_channels():
 
 @app.route('/api/gpio/info/', methods=['GET'])
 def info():
-    return jsonify(revision=pi.info())
+    return jsonify(info=pi.info())
 
 
 def run(host='0.0.0.0', port=5000):

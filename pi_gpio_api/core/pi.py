@@ -46,7 +46,11 @@ class Pi(object):
             raise AttributeError('Can\'t change function to non IO pins')
 
         self.clean(channel)
-        GPIO.setup(channel, self.__get_function_by_string(fnc))
+        try:
+            GPIO.setup(channel, self.__get_function_by_string(fnc))
+        except Exception:
+            raise Exception('Can\'t use channel {} as "{}" on this board'.
+            format(channel, fnc))
 
     def read(self, channel):
         """
@@ -54,12 +58,7 @@ class Pi(object):
         :param channel: int, channel to read
         :return: value/measure of the given channel
         """
-        try:
-            ret = GPIO.input(channel)
-        except Exception as e:
-            ret = 'ERROR: ' + str(e)
-            print(ret)
-        return ret
+        return GPIO.input(channel)
 
     def write(self, channel, state):
         """
@@ -74,8 +73,9 @@ class Pi(object):
         state = GPIO.HIGH if state else GPIO.LOW
         try:
             GPIO.output(channel, state)
-        except Exception as e:
-            print('ERROR: ' + str(e))
+        except Exception:
+            raise Exception('Couldn\'t write value to the channel {}'.
+                            format(channel))
 
     def info(self):
         """
@@ -101,8 +101,11 @@ class Pi(object):
             status = {}
             status['pin'] = p
             status['pin_function'] = self.__pin_function_name(p)
-            if p in pin_layout.IO_PINS:
-                status['pin_state'] = self.read(p)
+            try:
+                if p in pin_layout.IO_PINS:
+                    status['pin_state'] = self.read(p)
+            except Exception:
+                continue
             data.append(status)
 
         return data
@@ -114,7 +117,6 @@ class Pi(object):
         :return: string with the description of the pin
         """
         try:
-            descr = self.set_channel_function[GPIO.gpio_function(pin)]
-        except Exception:
-            descr = pin_layout.pin_description(pin)
-        return descr
+            return self.channel_functions[GPIO.gpio_function(pin)]
+        except:
+            return pin_layout.pin_description(pin)
