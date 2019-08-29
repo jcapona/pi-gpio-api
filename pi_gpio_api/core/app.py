@@ -16,20 +16,21 @@ def set_channel_status(channel):
 
     content = request.json
     pin_type = content.get('type')
+    has_value = 'value' in content
     value = content.get('value')
 
     if not isinstance(pin_type, str) or pin_type not in ('input', 'output'):
         abort(400, 'type must be a string, either "input" or "output"')
 
-    if not value and pin_type.lower() == 'output':
+    if not has_value and pin_type.lower() == 'output':
         abort(400, 'Missing "value" parameter')
 
-    if value and pin_type.lower() == 'input':
+    if has_value and pin_type.lower() == 'input':
         abort(400, 'Can\'t write a value to a channel setup as input')
 
     try:
         pi.set_channel_function(channel, pin_type)
-        if value:
+        if has_value:
             pi.write(channel, value)
     except Exception as e:
         abort(400, e.message)
