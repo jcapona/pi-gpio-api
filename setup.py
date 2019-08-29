@@ -19,7 +19,7 @@ long_description = read('README.rst')
 
 setup(
     name='pi-gpio_api',
-    version='0.1.0',
+    version='0.1.1',
     description='web API to control Raspberry Pi GPIO',
     long_description=long_description,
     url='https://github.com/jcapona/pi-gpio-api',
